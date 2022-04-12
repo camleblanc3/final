@@ -1,0 +1,33 @@
+{% extends 'components/layout.html' %}
+
+{% block col %}
+<img class = "img-fluid" src = '../static/images/as_bg2.jpg' alt = "all-star background image" />            
+{% endblock col %}"
+
+{% block leftcol %}
+<div class="card">
+    <div class="card-header">
+      The 2022 Western Conference NBA All-Stars
+    </div>
+    <ul class="list-group list-group-flush">
+        
+        {% for name in westas %}
+        <li class="list-group-item">{{ name.title() }} </li>
+        {% endfor %}
+    </ul>
+  </div>
+{% endblock leftcol %}
+
+{% block rightcol %}
+<div class="card">
+    <div class="card-header">
+      The 2022 Eastern Conference NBA All-Stars
+    </div>
+    <ul class="list-group list-group-flush">
+        
+        {% for name in eastas %}
+        <li class="list-group-item">{{ name.title() }} </li>
+        {% endfor %}
+    </ul>
+  </div>
+{% endblock rightcol %}
