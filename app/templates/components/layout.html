@@ -22,6 +22,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <div class="navbar-nav">
         <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        <a class="nav-link" href="{{ url_for('cards') }}">Trading Cards</a>
 
       </div>
       <div class="navbar-nav ml-auto">
@@ -50,12 +51,13 @@
     </div>
 
     <div class="row">
-      <div class="col" ALIGN="center">
+      <div class="col-12" ALIGN="center" >
         {% block col %}
         {% endblock col %}
       </div>
     </div>
     <div class="row">
+      {% block row %}
       <div class="col">
         {% block leftcol %}
         {% endblock leftcol %}
@@ -64,6 +66,7 @@
         {% block rightcol %}
         {% endblock rightcol %}
       </div>
+      {% endblock row %}
     </div>
   </div>
   <!-- Optional JavaScript -->

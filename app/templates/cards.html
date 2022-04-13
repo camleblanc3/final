@@ -1,0 +1,23 @@
+{% extends 'components/layout.html' %}
+
+{% block row %}
+{% for x in pc %}
+<div class="card" style="width: 18rem;">
+    <img src="{{ x['img'] }}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ x['first_name'] }} {{ x['last_name'] }}</h5>
+    </div>
+    <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">PTS: {{ x['pts'] }}</li>
+      <li class="list-group-item">REB: {{ x['reb'] }}</li>
+      <li class="list-group-item">AST: {{ x['ast'] }}</li>
+    </ul>
+    </div>
+    {% if 'user' in session %}
+    <a class="btn btn-primary" >Add to Collection</a>
+    {% endif %}
+    
+  </div>
+{% endfor %}
+{% endblock row %}
