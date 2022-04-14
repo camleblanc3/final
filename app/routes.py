@@ -1,12 +1,11 @@
 import json
 from app import app
-
 from flask import session, redirect, render_template, request, url_for, flash, jsonify
 from firebase import firebase
 import plotly
 import plotly.express as px
 import pandas as pd
-from .forms import chartForm
+from .forms import chartForm, compareForm
 
 @app.route('/')
 def home():
@@ -25,23 +24,81 @@ def cards():
 @app.route('/stats', methods=['POST','GET'])
 def stats():
     form = chartForm()
-    f = form.chartType.data
+    f = form.statType.data
+    c = form.chartType.data
     x= {'pts':'Points Per Game', 'reb':'Rebounds Per Game', 'ast':'Assists Per Game', 'stl':'Steals Per Game', 'blk':'Blocks Per Game', 'fg%':'Field Goal Percentage', '3p%':'3-Point Percentage'}
     if request.method == 'POST':
-        try:
-            stat = fb.get('/players',None)
-            st = pd.DataFrame(stat)
-            fig = px.scatter(st, x='last_name', y=f'{f}',title=f'{x[f]}', labels={'last_name': 'Players', f'{f}' : f'{x[f]}'} )
-            graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-        except:
-            stat = fb.get('/players',None)
-            st = pd.DataFrame(stat)
-            fig = px.scatter(st, x='last_name', y='pts',title=f'{form.chartType.data}' )
-            graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        if c == 'Scatter-Plot':
+            try:
+                stat = fb.get('/players',None)
+                st = pd.DataFrame(stat)
+                fig = px.scatter(st, x='last_name', y=f'{f}',title=f'{x[f]}', labels={'last_name': 'Players', f'{f}' : f'{x[f]}'} )
+                graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+            except:
+                stat = fb.get('/players',None)
+                st = pd.DataFrame(stat)
+                fig = px.scatter(st, x='last_name', y='pts' )
+                graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        elif c == 'Bar-Graph':
+            try:
+                stat = fb.get('/players',None)
+                st = pd.DataFrame(stat)
+                fig = px.bar(st, x='last_name', y=f'{f}',title=f'{x[f]}', labels={'last_name': 'Players', f'{f}' : f'{x[f]}'},)
+                graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+            except:
+                stat = fb.get('/players',None) 
+                st = pd.DataFrame(stat)
+                fig = px.bar(st, x='last_name', y='pts' )
+                graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        else:
+            try:
+                stat = fb.get('/players',None)
+                st = pd.DataFrame(stat)
+                fig = px.line(st, x='last_name', y=f'{f}',title=f'{x[f]}', labels={'last_name': 'Players', f'{f}' : f'{x[f]}'} )
+                graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+            except:
+                stat = fb.get('/players',None)
+                st = pd.DataFrame(stat)
+                fig = px.line(st, x='last_name', y='pts' )
+                graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+        
             
         return render_template('stats.html',form=form,  graphJSON=graphJSON)
     
     return render_template('stats.html',form=form, graphJSON=None)
+
+@app.route('/compare', methods=['GET','POST'])
+def compare():
+    form=compareForm()
+    p1 = form.player1.data
+    p2 = form.player2.data
+    p3 = form.player3.data
+    p = [f'{p1}',f'{p2}',f'{p3}'] 
+    s = form.statType.data
+    gh = {'pts':'Points Per Game', 'reb':'Rebounds Per Game', 'ast':'Assists Per Game', 'stl':'Steals Per Game', 'blk':'Blocks Per Game', 'fg%':'Field Goal Percentage', '3p%':'3-Point Percentage'}
+    players = {'Embiid': 'Joel Embiid', 'Antetokounmpo': 'Giannis Antetokounmpo', 'Doncic': 'Luka Doncic', 'Young': 'Trae Young', 'DeRozan': 'DeMar DeRozan', 'Jokic': 'Nikola Jokic', 'Tatum': 'Jayson Tatum', 'Booker': 'Devin Booker', 'James': 'LeBron James', 'Durant': 'Kevin Durant', 'Gobert': 'Rudy Gobert', 'Morant': 'Ja Morant', 'Towns': 'Karl-Anthony Towns', 'Allen': 'Jarrett Allen', 'Curry': 'Stephen Curry', 'Paul': 'Chris Paul', 'Harden': 'James Harden', 'Murray': 'Dejounte Murray', 'Garland': 'Darius Garland', 'Ball': 'Lamelo Ball', 'Wiggins': 'Andrew Wiggins', 'Green': 'Draymond Green', 'Lavine': 'Zach Lavine', 'VanVleet': 'Fred VanVleet', 'Butler': 'Jimmy Butler', 'Middleton': 'Khris Middleton', 'Mitchell': 'Donovan Mitchell'}
+    if request.method == 'POST':
+        try:
+            k = []
+            stat = fb.get('/players',None)
+            for x in stat:
+                if x['last_name'] in p:
+                    k.append(x)
+            st = pd.DataFrame(k)
+            fig = px.histogram(st, x='last_name', y=f'{s}', labels={'last_name': 'Players', f'{s}' : f'{gh[s]}'}, color='last_name')
+            graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        except:
+            stat = fb.get('/players',None)
+            st = pd.DataFrame(stat)
+            fig = px.line(st, x='last_name', y='pts')
+            graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        
+        return render_template('compare.html',form=form,  graphJSON=graphJSON)
+    
+    return render_template('compare.html',form=form, graphJSON=None)
+
+    
 
 
 import pyrebase

@@ -3,21 +3,30 @@
 {% block row %}
 {% for x in pc %}
 <div class="card" style="width: 18rem;">
-    <img src="{{ x['img'] }}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">{{ x['first_name'] }} {{ x['last_name'] }}</h5>
-    </div>
-    <div class="card-body">
-    <ul class="list-group list-group-flush">
+  <img src="{{ x['img'] }}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ x['first_name'] }} {{ x['last_name'] }}</h5>
+  </div>
+  <div class="card-body">
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item">Team: {{ x['team'] }}</li>
+      <li class="list-group-item">Position: {{ x['pos'] }}</li>
+    </ul>
+    <ul class="list-group list-group-horizontal">
       <li class="list-group-item">PTS: {{ x['pts'] }}</li>
       <li class="list-group-item">REB: {{ x['reb'] }}</li>
       <li class="list-group-item">AST: {{ x['ast'] }}</li>
     </ul>
-    </div>
-    {% if 'user' in session %}
-    <a class="btn btn-primary" >Add to Collection</a>
-    {% endif %}
-    
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item">PER: {{ x['per'] }}</li>
+      <li class="list-group-item">BLK: {{ x['blk'] }}</li>
+      <li class="list-group-item">STL: {{ x['stl'] }}</li>
+    </ul>
   </div>
+  {% if 'user' in session %}
+  <a class="btn btn-primary"git >Add to Collection</a>
+  {% endif %}
+
+</div>
 {% endfor %}
 {% endblock row %}
