@@ -5,6 +5,7 @@ from flask import session, redirect, render_template, request, url_for, flash, j
 from firebase import firebase
 import plotly
 import plotly.express as px
+import pandas as pd
 
 @app.route('/')
 def home():
@@ -23,11 +24,17 @@ def cards():
 @app.route('/stats')
 def stats():
     stat = fb.get('/players',None)
-    st = px.data.stat()
+    st = pd.DataFrame(stat)
     fig = px.bar(st, x='last_name', y='pts')
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    fig1 = px.bar(st, x='last_name', y='reb',)
+    graphJSON1 = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return render_template('stats.html', graphJSON=graphJSON)
+    fig2 = px.bar(st, x='last_name', y='ast')
+    graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('stats.html', graphJSON=graphJSON, graphJSON1=graphJSON1, graphJSON2=graphJSON2)
 
 
 import pyrebase
