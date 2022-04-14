@@ -6,6 +6,7 @@ from firebase import firebase
 import plotly
 import plotly.express as px
 import pandas as pd
+from .forms import chartForm
 
 @app.route('/')
 def home():
@@ -21,20 +22,26 @@ def cards():
     return render_template('cards.html', pc = pc)
 
 
-@app.route('/stats')
+@app.route('/stats', methods=['POST','GET'])
 def stats():
-    stat = fb.get('/players',None)
-    st = pd.DataFrame(stat)
-    fig = px.bar(st, x='last_name', y='pts')
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    form = chartForm()
+    f = form.chartType.data
+    x= {'pts':'Points Per Game', 'reb':'Rebounds Per Game', 'ast':'Assists Per Game', 'stl':'Steals Per Game', 'blk':'Blocks Per Game', 'fg%':'Field Goal Percentage', '3p%':'3-Point Percentage'}
+    if request.method == 'POST':
+        try:
+            stat = fb.get('/players',None)
+            st = pd.DataFrame(stat)
+            fig = px.scatter(st, x='last_name', y=f'{f}',title=f'{x[f]}', labels={'last_name': 'Players', f'{f}' : f'{x[f]}'} )
+            graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        except:
+            stat = fb.get('/players',None)
+            st = pd.DataFrame(stat)
+            fig = px.scatter(st, x='last_name', y='pts',title=f'{form.chartType.data}' )
+            graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+            
+        return render_template('stats.html',form=form,  graphJSON=graphJSON)
     
-    fig1 = px.bar(st, x='last_name', y='reb',)
-    graphJSON1 = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
-
-    fig2 = px.bar(st, x='last_name', y='ast')
-    graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
-
-    return render_template('stats.html', graphJSON=graphJSON, graphJSON1=graphJSON1, graphJSON2=graphJSON2)
+    return render_template('stats.html',form=form, graphJSON=None)
 
 
 import pyrebase

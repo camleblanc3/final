@@ -1,42 +1,26 @@
 {% extends 'components/layout.html' %}
 
 {% block col %}
-<script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/plots.js') }}"></script>
-<div class="col-3">
-    <label> Choose the plot type....</label>
-    <select class="form-control" id ='first_cat'>
-        <option value="Bar">Bar</option>
-        <option value="Scatter">Scatter</option>
-    </select>
+<div class="row justify-content-center">
+    <div class="col-6">
+        <form class="form-inline" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.chartType(class="mr-3 form-control", placeholder="Chart") }}
+            </div>
+            {{ form.submit(class="btn btn-info") }}
+        </form>
+        <small id="ch" class="form-text text-muted">Submit chart type to see stats.</small>
+    </div>
 </div>
- <body>
-  <h1>Points Per Game</h1>
-  <div id='chart' class='chart'”></div>
+
+<body>
+    <h1></h1>
+    <div id='chart' class='chart' ”></div>
 </body>
 <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 <script type='text/javascript'>
-  var graphs = {{graphJSON | safe}};
-  Plotly.plot('chart',graphs,{});
+    var graphs = {{ graphJSON | safe}};
+    Plotly.plot('chart', graphs, {});
 </script>
-
-<body>
-    <h1>Rebounds Per Game</h1>
-    <div id='chart1' class='chart'”></div>
-  </body>
-  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-  <script type='text/javascript'>
-    var graphs1 = {{graphJSON1 | safe}};
-    Plotly.plot('chart1',graphs1,{});
-  </script>
-  
-  <body>
-    <h1>Assists Per Game</h1>
-    <div id='chart2' class='chart'”></div>
-  </body>
-  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-  <script type='text/javascript'>
-    var graphs2 = {{graphJSON2 | safe}};
-    Plotly.plot('chart2',graphs2,{});
-  </script>
 {% endblock col %}
