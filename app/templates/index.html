@@ -5,29 +5,53 @@
 {% endblock col %}"
 
 {% block leftcol %}
-<div class="card">
-    <div class="card-header">
-      The 2022 Western Conference NBA All-Stars
-    </div>
-    <ul class="list-group list-group-flush">
-        
-        {% for x in pc %}
-        <li class="list-group-item">{{ name.title() }} </li>
-        {% endfor %}
-    </ul>
+<div class="card" style="width: 24rem; border-width: 0.5rem; border-color: black;margin: 0.5rem;">
+  <div class="card-header">
+    <h3>Schedule of Events</h3>
   </div>
-{% endblock leftcol %}
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><h4>Friday, Feb. 18:</h4> 
+      <ul class="list-group">
+        <li class="list-group-item">Ruffles NBA Celebrity Game</li>
+      </ul>
+    </li>
+    <li class="list-group-item"><h4>Saturday, Feb. 19:</h4> 
+      <ul class="list-group">
+        <li class="list-group-item">Taco Bell Skills Challenge</li>
+        <li class="list-group-item">Mountain Dew 3-Point Contest</li>
+        <li class="list-group-item">AT&T Slam Dunk Contest</li>
+      </ul>
+    </li>
+    <li class="list-group-item"><h4>Sunday, Feb.20:</h4> 
+      <ul class="list-group">
+        <li class="list-group-item">71st NBA All-Star Game</li>
+      </ul>
+    </li>
+  </ul>
+</div>
 
-{% block rightcol %}
-<div class="card">
-    <div class="card-header">
-      The 2022 Eastern Conference NBA All-Stars
-    </div>
-    <ul class="list-group list-group-flush">
-        
-        {% for name in eastas %}
-        <li class="list-group-item">{{ name.title() }} </li>
-        {% endfor %}
-    </ul>
+{% endblock leftcol %}
+{% block col1 %}
+<div class="card" style="width: 24rem; border-width: 0.5rem; border-color: black;margin: 0.5rem;">
+  <div class="card-header">
+    <h3>Eastern Conference All-Stars</h3>
   </div>
+  <ul class="list-group list-group-flush">
+    {% for name in eastas %}
+    <li class="list-group-item">{{ name.title() }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock col1 %}
+{% block rightcol %}
+<div class="card" style="width: 24rem; border-width: 0.5rem; border-color: black;margin: 0.5rem;">
+  <div class="card-header">
+    <h3>Western Conference All-Stars</h3>
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for name in westas %}
+    <li class="list-group-item">{{ name.title() }}</li>
+    {% endfor %}
+  </ul>
+</div>
 {% endblock rightcol %}

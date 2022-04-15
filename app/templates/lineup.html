@@ -1,0 +1,49 @@
+
+{% extends 'components/layout.html' %}
+
+{% block col %}
+<div class="row justify-content-center">
+    <div class="col-6">
+        <h2>Create Your Best Starting Five</h2>
+        <form class="form-inline justify-content-center" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.player1(class="mr-3 form-control", placeholder="Player 1") }}
+                {{ form.player2(class="mr-3 form-control", placeholder="Player 2") }}
+                {{ form.player3(class="mr-3 form-control", placeholder="Player 3") }}
+                {{ form.player4(class="mr-3 form-control", placeholder="Player 4") }}
+                {{ form.player5(class="mr-3 form-control", placeholder="Player 5") }}
+            
+            </div>
+            {{ form.submit(class="btn btn-info") }}
+        </form>
+        
+    </div>
+</div>
+{% endblock col %}
+{% block row %}
+{% for x in k %}
+<div class="card" style="width: 18rem; border-radius: 5%;border-color: black ;border-width: 1rem; margin: 0.3rem;">
+    <img src="{{ x['img'] }}" class="card-img-top" alt="">
+    <div class="card-body text-center">
+      <h5 class="card-title">{{ x['first_name'] }} {{ x['last_name'] }}</h5>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-horizontal">
+        <li class="list-group-item">Team: {{ x['team'] }}</li>
+        <li class="list-group-item">Position: {{ x['pos'] }}</li>
+      </ul>
+      <ul class="list-group list-group-horizontal">
+        <li class="list-group-item">PTS: {{ x['pts'] }}</li>
+        <li class="list-group-item">REB: {{ x['reb'] }}</li>
+        <li class="list-group-item">AST: {{ x['ast'] }}</li>
+      </ul>
+      <ul class="list-group list-group-horizontal">
+        <li class="list-group-item">PER: {{ x['per'] }}</li>
+        <li class="list-group-item">BLK: {{ x['blk'] }}</li>
+        <li class="list-group-item">STL: {{ x['stl'] }}</li>
+      </ul>
+    </div>
+</div>
+{% endfor %}
+{% endblock row %}

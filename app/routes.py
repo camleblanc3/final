@@ -1,12 +1,12 @@
+
 import json
 from app import app
-from flask import session, redirect, render_template, request, url_for, flash, jsonify
+from flask import session, redirect, render_template, request, url_for, flash
 from firebase import firebase
 import plotly
 import plotly.express as px
 import pandas as pd
 from .forms import chartForm, compareForm, lineupForm
-from firebase_admin import credentials, firestore, initialize_app
 import pyrebase
 from .authforms import SignInForm, RegisterForm
 
@@ -135,6 +135,27 @@ def compare():
         return render_template('compare.html',form=form,  graphJSON=graphJSON)
     
     return render_template('compare.html',form=form, graphJSON=None)
+
+@app.route('/lineup', methods=['GET','POST'])
+def lineup():
+    form = lineupForm()
+    p1 = form.player1.data
+    p2 = form.player2.data
+    p3 = form.player3.data
+    p4 = form.player4.data
+    p5 = form.player5.data
+    p = [f'{p1}',f'{p2}',f'{p3}',f'{p4}',f'{p5}'] 
+    if request.method == 'POST':
+        try:
+            k = []
+            stat = fb.get('/players',None)
+            for x in stat:
+                if x['last_name'] in p:
+                    k.append(x)
+        except:
+            pass    
+        return render_template('lineup.html', form=form, k=k)
+    return render_template('lineup.html', form=form)
 
     
 @app.route('/register', methods=['GET','POST'])
