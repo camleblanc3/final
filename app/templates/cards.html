@@ -2,12 +2,12 @@
 
 {% block row %}
 {% for x in pc %}
-<div class="card" style="width: 18rem;">
-  <img src="{{ x['img'] }}" class="card-img-top" alt="...">
-  <div class="card-body justify-content-center">
-    <h5 class="card-title ">{{ x['first_name'] }} {{ x['last_name'] }}</h5>
+<div class="card" style="width: 18rem; border-radius: 5%;border-color: black ;border-width: 1rem; margin: 0.3rem;">
+  <img src="{{ x['img'] }}" class="card-img-top" alt="">
+  <div class="card-body text-center">
+    <h5 class="card-title">{{ x['first_name'] }} {{ x['last_name'] }}</h5>
   </div>
-  <div class="card-body justify-content-center">
+  <div class="card-body">
     <ul class="list-group list-group-horizontal">
       <li class="list-group-item">Team: {{ x['team'] }}</li>
       <li class="list-group-item">Position: {{ x['pos'] }}</li>
@@ -23,9 +23,7 @@
       <li class="list-group-item">STL: {{ x['stl'] }}</li>
     </ul>
   </div>
-  {% if 'user' in session %}
-  <a class="btn btn-primary"git >Add Player to Your Collection.</a>
-  {% endif %}
+  
 
 </div>
 {% endfor %}

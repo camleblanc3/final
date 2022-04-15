@@ -5,20 +5,56 @@ from firebase import firebase
 import plotly
 import plotly.express as px
 import pandas as pd
-from .forms import chartForm, compareForm
+from .forms import chartForm, compareForm, lineupForm
+from firebase_admin import credentials, firestore, initialize_app
+import pyrebase
+from .authforms import SignInForm, RegisterForm
+
+
 
 @app.route('/')
 def home():
     westas = ['lebron james', 'stephen curry', 'andrew wiggins', 'ja morant', 'nikola jokic', 'devin booker', 'rudy gobert', 'chris paul', 'draymond green', 'donovan mitchell', 'luka doncic', ' dejounte murray', 'karl-anthony towns']
     eastas = ['kevin durant', 'trae young', 'jayson tatum', 'joel embiid', 'demar derozan', 'giannis antetokounmpo', 'lamelo ball', 'darius garland', 'james harden', 'zach lavine', 'fred vanvleet', 'jimmy butler', 'khris middleton', 'jarrett allen']
+    
+    
     return render_template('index.html', westas = westas, eastas = eastas)
 
 fb = firebase.FirebaseApplication('https://final-5da16-default-rtdb.firebaseio.com/', None)
+config = {
+    'apiKey': "AIzaSyCkp48LWfqzYZqJYai7Um0iCj9ziO4SkrU",
+    'authDomain': "final-5da16.firebaseapp.com",
+    'projectId': "final-5da16",
+    'storageBucket': "final-5da16.appspot.com",
+    'messagingSenderId': "925408783056",
+    'appId': "1:925408783056:web:616c02aab4114cf56f4cd5",
+    'measurementId': "G-SL6VMP3Y70",
+    'databaseURL': ''
+}
 
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
 @app.route('/cards')
 def cards():
     pc = fb.get('/players',None)
+   
     return render_template('cards.html', pc = pc)
+
+config = {
+    'apiKey': "AIzaSyCkp48LWfqzYZqJYai7Um0iCj9ziO4SkrU",
+    'authDomain': "final-5da16.firebaseapp.com",
+    'projectId': "final-5da16",
+    'storageBucket': "final-5da16.appspot.com",
+    'messagingSenderId': "925408783056",
+    'appId': "1:925408783056:web:616c02aab4114cf56f4cd5",
+    'measurementId': "G-SL6VMP3Y70",
+    'databaseURL': ''
+}
+
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
+
+
 
 
 @app.route('/stats', methods=['POST','GET'])
@@ -74,7 +110,9 @@ def compare():
     p1 = form.player1.data
     p2 = form.player2.data
     p3 = form.player3.data
-    p = [f'{p1}',f'{p2}',f'{p3}'] 
+    p4 = form.player4.data
+    p5 = form.player5.data
+    p = [f'{p1}',f'{p2}',f'{p3}',f'{p4}',f'{p5}'] 
     s = form.statType.data
     gh = {'pts':'Points Per Game', 'reb':'Rebounds Per Game', 'ast':'Assists Per Game', 'stl':'Steals Per Game', 'blk':'Blocks Per Game', 'fg%':'Field Goal Percentage', '3p%':'3-Point Percentage'}
     players = {'Embiid': 'Joel Embiid', 'Antetokounmpo': 'Giannis Antetokounmpo', 'Doncic': 'Luka Doncic', 'Young': 'Trae Young', 'DeRozan': 'DeMar DeRozan', 'Jokic': 'Nikola Jokic', 'Tatum': 'Jayson Tatum', 'Booker': 'Devin Booker', 'James': 'LeBron James', 'Durant': 'Kevin Durant', 'Gobert': 'Rudy Gobert', 'Morant': 'Ja Morant', 'Towns': 'Karl-Anthony Towns', 'Allen': 'Jarrett Allen', 'Curry': 'Stephen Curry', 'Paul': 'Chris Paul', 'Harden': 'James Harden', 'Murray': 'Dejounte Murray', 'Garland': 'Darius Garland', 'Ball': 'Lamelo Ball', 'Wiggins': 'Andrew Wiggins', 'Green': 'Draymond Green', 'Lavine': 'Zach Lavine', 'VanVleet': 'Fred VanVleet', 'Butler': 'Jimmy Butler', 'Middleton': 'Khris Middleton', 'Mitchell': 'Donovan Mitchell'}
@@ -99,26 +137,6 @@ def compare():
     return render_template('compare.html',form=form, graphJSON=None)
 
     
-
-
-import pyrebase
-from .authforms import SignInForm, RegisterForm
-
-config = {
-    'apiKey': "AIzaSyCkp48LWfqzYZqJYai7Um0iCj9ziO4SkrU",
-    'authDomain': "final-5da16.firebaseapp.com",
-    'projectId': "final-5da16",
-    'storageBucket': "final-5da16.appspot.com",
-    'messagingSenderId': "925408783056",
-    'appId': "1:925408783056:web:616c02aab4114cf56f4cd5",
-    'measurementId': "G-SL6VMP3Y70",
-    'databaseURL': ''
-}
-
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
-
-
 @app.route('/register', methods=['GET','POST'])
 def register():
     rform = RegisterForm()

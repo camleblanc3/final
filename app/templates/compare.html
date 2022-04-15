@@ -1,15 +1,18 @@
+
 {% extends 'components/layout.html' %}
 
 {% block col %}
 <div class="row justify-content-center">
     <div class="col-6">
-        <h2>Submit 3 Players you want to Compare.</h2>
+        <h2>Submit the Players you want to Compare.</h2>
         <form class="form-inline justify-content-center" method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{ form.player1(class="mr-3 form-control", placeholder="Player 1") }}
                 {{ form.player2(class="mr-3 form-control", placeholder="Player 2") }}
                 {{ form.player3(class="mr-3 form-control", placeholder="Player 3") }}
+                {{ form.player4(class="mr-3 form-control", placeholder="Player 4") }}
+                {{ form.player5(class="mr-3 form-control", placeholder="Player 5") }}
                 {{ form.statType(class="mr-3 form-control", placeholder="Stat Type") }}
             </div>
             {{ form.submit(class="btn btn-info") }}
