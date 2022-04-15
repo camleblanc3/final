@@ -62,7 +62,7 @@ def stats():
     form = chartForm()
     f = form.statType.data
     c = form.chartType.data
-    x= {'pts':'Points Per Game', 'reb':'Rebounds Per Game', 'ast':'Assists Per Game', 'stl':'Steals Per Game', 'blk':'Blocks Per Game', 'fg%':'Field Goal Percentage', '3p%':'3-Point Percentage'}
+    x= {'pts':'Points Per Game', 'per':'Player Efficiency Rating', 'reb':'Rebounds Per Game', 'ast':'Assists Per Game', 'stl':'Steals Per Game', 'blk':'Blocks Per Game', 'fg%':'Field Goal Percentage', '3p%':'3-Point Percentage'}
     if request.method == 'POST':
         if c == 'Scatter-Plot':
             try:
@@ -114,7 +114,7 @@ def compare():
     p5 = form.player5.data
     p = [f'{p1}',f'{p2}',f'{p3}',f'{p4}',f'{p5}'] 
     s = form.statType.data
-    gh = {'pts':'Points Per Game', 'reb':'Rebounds Per Game', 'ast':'Assists Per Game', 'stl':'Steals Per Game', 'blk':'Blocks Per Game', 'fg%':'Field Goal Percentage', '3p%':'3-Point Percentage'}
+    gh = {'pts':'Points Per Game', 'per':'Player Efficiency Rating' , 'reb':'Rebounds Per Game', 'ast':'Assists Per Game', 'stl':'Steals Per Game', 'blk':'Blocks Per Game', 'fg%':'Field Goal Percentage', '3p%':'3-Point Percentage'}
     players = {'Embiid': 'Joel Embiid', 'Antetokounmpo': 'Giannis Antetokounmpo', 'Doncic': 'Luka Doncic', 'Young': 'Trae Young', 'DeRozan': 'DeMar DeRozan', 'Jokic': 'Nikola Jokic', 'Tatum': 'Jayson Tatum', 'Booker': 'Devin Booker', 'James': 'LeBron James', 'Durant': 'Kevin Durant', 'Gobert': 'Rudy Gobert', 'Morant': 'Ja Morant', 'Towns': 'Karl-Anthony Towns', 'Allen': 'Jarrett Allen', 'Curry': 'Stephen Curry', 'Paul': 'Chris Paul', 'Harden': 'James Harden', 'Murray': 'Dejounte Murray', 'Garland': 'Darius Garland', 'Ball': 'Lamelo Ball', 'Wiggins': 'Andrew Wiggins', 'Green': 'Draymond Green', 'Lavine': 'Zach Lavine', 'VanVleet': 'Fred VanVleet', 'Butler': 'Jimmy Butler', 'Middleton': 'Khris Middleton', 'Mitchell': 'Donovan Mitchell'}
     if request.method == 'POST':
         try:
